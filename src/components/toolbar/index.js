@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
     },
     icon: {
         position: 'absolute',
-        top: -4,
-        left: 15
+        top: -23,
+        left: 0,
+        padding: 20
     },
     title: {
         fontSize: 24,

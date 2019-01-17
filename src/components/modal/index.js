@@ -87,7 +87,7 @@ export default class ModalExample extends Component {
             textAlign: 'center'
           }}
         >{description}</Text>
-        <MButton error={error ? error : false} title={error ? 'Try Again' : buttonTitle}></MButton>
+        <MButton error={error ? error : false} title={error ? 'Try Again' : buttonTitle} onPress={e => this.props.onPress ? this.props.onPress(e) : null}></MButton>
       </Modal>
     );
   }

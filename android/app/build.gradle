@@ -79,7 +79,7 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 
 project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf', 'FontAwesome.ttf' ] // Name of the font files you want to copy
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf', 'FontAwesome.ttf', 'Ionicons.ttf', 'Foundation.ttf' ] // Name of the font files you want to copy
 ]
 
 
@@ -92,7 +92,7 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = true
+def enableSeparateBuildPerCPUArchitecture = false
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -109,6 +109,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
     splits {
         abi {
@@ -151,6 +154,18 @@ android {
 }
 
 dependencies {
+     // For animated GIF support
+    implementation 'com.facebook.fresco:animated-gif:1.11.0'
+
+    // For WebP support, including animated WebP
+    implementation 'com.facebook.fresco:animated-webp:1.11.0'
+    implementation 'com.facebook.fresco:webpsupport:1.11.0'
+
+    // For WebP support, without animations
+    implementation 'com.facebook.fresco:webpsupport:1.11.0'
+
+    // Provide the Android support library (you might already have this or a similar dependency)
+    implementation 'com.android.support:support-core-utils:24.2.1'
     implementation project(':react-native-maps')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-gesture-handler')

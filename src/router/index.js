@@ -1,12 +1,9 @@
 import React from 'react';
-import {createBottomTabNavigator, createStackNavigator,createAppContainer,createSwitchNavigator} from 'react-navigation'
+import {createBottomTabNavigator, createStackNavigator,createSwitchNavigator} from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-import {createStore, applyMiddleware, combineReducers} from 'redux'
 import {reduxifyNavigator, createNavigationReducer, createReactNavigationReduxMiddleware} from 'react-navigation-redux-helpers'
 import {connect} from 'react-redux'
-
-
 
 
 import ActivityHome from '../layout/acitivity.home';
@@ -16,6 +13,19 @@ import ActivitySetting from '../layout/activity.setting';
 import ActivityMap from '../layout/activity.map';
 import ActivityLogin from '../layout/activity.login';
 import ActivityRegister from '../layout/activity.register';
+import LandingPage from '../layout/activity.landing';
+import ActivityLoading from '../layout/activity.loading';
+import LockScreen from '../components/setting/lock.screen';
+import ChangePassword from '../components/setting/change.password';
+import LockScreenOne from '../components/setting/set.lock.screen.1';
+import LockScreenTwo from '../components/setting/set.lock.screen.2';
+import Lock from '../components/setting/lock';
+
+/**
+ * React Navigation V3.xx
+ * Routes Configuration
+ * 
+ */
 
 const StackNavigator = createStackNavigator({
     Help: {
@@ -35,6 +45,21 @@ const StackNavigator = createStackNavigator({
     cardStyle: {
         backgroundColor: '#303030'
     },
+})
+
+const StackLockScreen = createStackNavigator({
+    LockScreenOne: {
+        screen: LockScreenOne
+    },
+    LockScreenTwo: {
+        screen: LockScreenTwo
+    }
+},{
+    mode: 'modal',
+    headerMode: "none",
+    cardStyle: {
+        backgroundColor: "#303030"
+    }
 })
 
 const BottomNavigator = createBottomTabNavigator({
@@ -80,6 +105,21 @@ const BottomNavigator = createBottomTabNavigator({
     },
 })
 
+
+const SettingNavigator = createStackNavigator({
+    LockScreen: {
+        screen: LockScreen
+    },
+    ChangePass: {
+        screen: ChangePassword
+    }
+}, {
+    headerMode: "none",
+    cardStyle: {
+        backgroundColor: "#303030"
+    }
+})
+
 const GuestNavigator = createStackNavigator({
     Login: {
         screen: ActivityLogin
@@ -98,12 +138,49 @@ const GuestNavigator = createStackNavigator({
     },
 })
 
+const Landing = createStackNavigator({
+    Landing: {
+        screen: LandingPage
+    }
+},{
+    headerMode: 'none',
+    cardStyle: {
+        backgroundColor: '#303030'
+    }
+})
+
+const Loading = createStackNavigator({
+    Loading: {
+        screen: ActivityLoading
+    }
+},{
+    headerMode: "none",
+    cardStyle: {
+        backgroundColor: "#303030"
+    }
+})
+
+const LockNavigator = createStackNavigator({
+    Lock: {
+        screen: Lock
+    }
+}, {
+    headerMode: "none",
+    initialRouteName: "Lock"
+})
+
 const RootRouter = createSwitchNavigator({
     BottomNavigator,
     StackNavigator,
-    GuestNavigator
+    GuestNavigator,
+    Landing,
+    Loading,
+    SettingNavigator,
+    StackLockScreen,
+    LockNavigator
 }, {
-    initialRouteName: 'GuestNavigator'
+    initialRouteName: 'Loading',
+
 })
 
 /**
@@ -111,9 +188,6 @@ const RootRouter = createSwitchNavigator({
  */
 
 const navReducers = createNavigationReducer(RootRouter)
-const appReducers = combineReducers({
-    nav: navReducers
-})
 
 const middleware = createReactNavigationReduxMiddleware("root", state => state.nav)
 
@@ -125,13 +199,9 @@ const mapStateToProps = (state) => ({
 
 const AppWithNavigationState = connect(mapStateToProps)(App)
 
-const store = createStore(
-    appReducers,
-    applyMiddleware(middleware)
-)
-
 export {
+    navReducers,
     AppWithNavigationState,
-    store
+    middleware
 }
 

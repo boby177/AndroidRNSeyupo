@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, BackHandler, Image, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import { View, Text, StyleSheet, BackHandler, Image, Dimensions, TouchableWithoutFeedback, Keyboard, NetInfo} from 'react-native';
 import {Icon} from 'react-native-elements'
 import TextInput from '../components/input'
 import MButton from '../components/buttons'
@@ -22,14 +22,22 @@ export default class ActivityRegister extends Component {
         error: false,
         open: false
     };
+      this.goBack = this.goBack.bind(this)
       
   }
-    componentDidMount() {
+    componentWillMount() {
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             this.goBack(); // works best when the goBack is async
             return true;
         });
     }
+
+    goBack() {
+        const {navigation} = this.props
+        const prev = navigation.getParam('prev','Login')
+        this.props.navigation.navigate(prev)
+    }
+
     componentWillUnmount() {
         this.backHandler.remove();
     }
@@ -61,6 +69,7 @@ export default class ActivityRegister extends Component {
   render() {
       const {erroruser, errorchecked, errorkey, errormail} = this.state
     return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
 
         <Image source={require('../assets/img/logo-revisi.png')} style={styles.img}/>
@@ -136,6 +145,7 @@ export default class ActivityRegister extends Component {
             <Text style={styles.textBox}>Have an account ?</Text>
         </TouchableWithoutFeedback>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

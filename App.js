@@ -7,18 +7,21 @@
  */
 
 import React, {Component} from 'react';
-import ActivityLogin from './src/layout/activity.login.js';
-import ActivityRegister from './src/layout/activity.register.js';
-import Test from './src/layout/activity.test.js';
-import ActivityHome from './src/layout/acitivity.home.js';
+import {TouchableWithoutFeedback, Keyboard, AppRegistry} from 'react-native'
 import {Provider} from 'react-redux'
-import {AppWithNavigationState, store} from './src/router';
+import {AppWithNavigationState} from './src/router';
+import store from './src/store'
 
+const LogLocation = async data => {
+  navigator.geolocation.getCurrentPosition(position => {
+    console.log(position.coords);
+  });
+};
+AppRegistry.registerHeadlessTask("LogLocation", () => LogLocation);
 export default class App extends Component {
   render() {
     return <Provider store={store}>
       <AppWithNavigationState />
     </Provider>
-    //<RouterHome />
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableHighlight, BackHandler, AsyncStorage } from "react-native";
 import NavButton from '../components/navButton';
 
 export default class ActivityPanel extends Component {
@@ -9,8 +9,18 @@ export default class ActivityPanel extends Component {
     };
   }
 
+  componentWillMount() {
+      this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+          this.props.navigation.goBack()
+          return true
+      })
+  }
+
+  componentWillUnmount() {
+      this.backHandler.remove()
+  }
+
   render() {
-      console.log(this.props)
     return (
       <View style={styles.container}>
         <Image
@@ -26,13 +36,17 @@ export default class ActivityPanel extends Component {
             <NavButton 
                 title="Home"
                 iconName="home"
-                onPress={(e) => this.props.navigation.navigate('Home')}
+                onPress={(e) => this.props.navigation.navigate('Home',{
+                        prev: 'Panel'
+                    })}
             />
             <NavButton 
                 title="Maps and Actions"
                 iconName="map-marked-alt"
                 onPress={(e) => {
-                    this.props.navigation.navigate('Maps')
+                    this.props.navigation.navigate('Maps',{
+                        prev: 'Panel'
+                    })
                 }}
             />
         </View>
@@ -45,20 +59,25 @@ export default class ActivityPanel extends Component {
                 title="Help"
                 iconName="question"
                 onPress={() => {
-                    this.props.navigation.navigate('Help')
+                    this.props.navigation.navigate('Help',{
+                        prev: 'Panel'
+                    })
                 }}
             />
             <NavButton 
                 title="Setting"
                 iconName="cog"
                 onPress={() => {
-                    this.props.navigation.navigate('Setting')
+                    this.props.navigation.navigate('Setting',{
+                        prev: 'Panel'
+                    })
                 }}
             />
         </View>
         <TouchableHighlight 
         onPress={(e) => {
-            this.props.navigation.navigate('GuestNavigator')
+            AsyncStorage.clear()
+            this.props.navigation.navigate('Loading')
         }}
         style={styles.logout}>
             <View style={{

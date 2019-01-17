@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, BackHandler } from 'react-native';
 import Maps from '../components/maps'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
@@ -8,9 +8,27 @@ export default class ActivityMap extends Component {
     super(props);
     this.state = {
     };
+    this.goBack = this.goBack.bind(this)
   }
 
+    componentWillMount() {
+        this.backButton = BackHandler.addEventListener('hardwareBackPress', this.goBack)
+    }
+
+    goBack() {
+        const { navigation } = this.props
+        const prev = navigation.getParam('prev', 'Panel')
+        this.props.navigation.navigate(prev)
+        return true
+    }
+
+    componentWillUnmount() {
+        this.backButton.remove()
+    }
+
   render() {
+      const {navigation} = this.props
+      const prev = navigation.getParam('prev','Panels')
     return <View style={styles.container}>
         <Maps />
         <View style={styles.wrapFloat}>
