@@ -20,6 +20,7 @@ import ChangePassword from '../components/setting/change.password';
 import LockScreenOne from '../components/setting/set.lock.screen.1';
 import LockScreenTwo from '../components/setting/set.lock.screen.2';
 import Lock from '../components/setting/lock';
+import ActivityAddDevice from '../layout/activity.addDevice';
 
 /**
  * React Navigation V3.xx
@@ -28,6 +29,9 @@ import Lock from '../components/setting/lock';
  */
 
 const StackNavigator = createStackNavigator({
+    AddDevice: {
+        screen: ActivityAddDevice
+    },
     Help: {
         screen: ActivityHelp
     },

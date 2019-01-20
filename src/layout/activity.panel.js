@@ -34,11 +34,12 @@ export default class ActivityPanel extends Component {
             }}
         >
             <NavButton 
-                title="Home"
-                iconName="home"
-                onPress={(e) => this.props.navigation.navigate('Home',{
+                title="Add Device"
+                iconName="mobile-alt"
+                onPress={(e) => this.props.navigation.navigate('AddDevice',{
                         prev: 'Panel'
                     })}
+                solid
             />
             <NavButton 
                 title="Maps and Actions"

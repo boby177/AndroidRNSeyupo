@@ -71,7 +71,6 @@ export default class ActivityRegister extends Component {
     return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-
         <Image source={require('../assets/img/logo-revisi.png')} style={styles.img}/>
         <ModalExample
             open={this.state.open} 

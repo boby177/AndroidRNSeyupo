@@ -14,7 +14,7 @@ export default class NavButton extends Component {
         style={styles.container} 
         onPress={(e) => this.props.onPress ? this.props.onPress(e) : null}>
             <View style={styles.con}>
-                <Icon color={'#a8a8a8'} name={this.props.iconName} size={36} />
+                <Icon color={'#a8a8a8'} name={this.props.iconName} size={36} solind={this.props.solid} brand={this.props.brand} />
                 <Text style={{ fontSize: 10 ,color: '#a8a8a8', marginTop: 10}}>{this.props.title}</Text>
             </View>
         </TouchableHighlight>
