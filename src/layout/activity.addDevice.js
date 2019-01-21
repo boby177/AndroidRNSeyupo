@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, BackHandler, Image } from 'react-native';
 import Toolbar from '../components/toolbar'
+import Row from '../components/row';
+import MButton from '../components/buttons';
 
 
 export default class ActivityAddDevice extends Component {
@@ -8,6 +10,20 @@ export default class ActivityAddDevice extends Component {
     super(props);
     this.state = {
     };
+    this.goBack = this.goBack.bind(this)
+  }
+
+  componentWillMount() {
+      this.backButton = BackHandler.addEventListener("hardwareBackPress", this.goBack)
+  }
+
+  goBack() {
+      this.props.navigation.navigate("Panel")
+      return true
+  }
+
+  componentWillUnmount() {
+      this.backButton.remove()
   }
 
   render() {
@@ -21,7 +37,7 @@ export default class ActivityAddDevice extends Component {
             onPress={(e) => this.props.navigation.navigate('Panel')}
         />  
             <View style={{
-                padding: 20, flex: 2,
+                paddingVertical: 80, flex: 2,
                 alignItems: 'center',}}>
             <Image 
                 source={{
@@ -33,6 +49,11 @@ export default class ActivityAddDevice extends Component {
                     height: 140
                 }}
             />
+            <View style={{ paddingVertical: 30, alignItems: 'center',}}>
+                <Row title={"Device Name"} value={"Nexus 5X"} />
+                <Row title={"Status"} value={"Connected"} color={"#64c17a"} />
+                <MButton title={"Remove Device"} onPress={() => null} style={{marginTop: 40}} />
+            </View>
         </View>
       </View>
     );

@@ -7,7 +7,7 @@ export default class MButton extends Component {
       let a = true
     return (
         <TouchableHighlight 
-        style={error ? styles.errorTouch : styles.touch} 
+        style={error ? {...styles.errorTouch,...this.props.style} : {...styles.touch,...this.props.style}} 
         onPress={(e) => {
             this.props.onPress ? this.props.onPress(e) : null
         }}>

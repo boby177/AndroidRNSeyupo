@@ -46,7 +46,7 @@ export default class ActivitySetting extends Component {
         <ScrollView zoomScale={0} style={{height: height + 50, width}}>
           <ViewSetting content={"Change Password"} onPress={(e) => this.props.navigation.navigate("ChangePass", {prev: "Setting"})} />
           <ViewSetting content={"Set Lock Screen"} onPress={(e) => this.props.navigation.navigate("LockScreen", {prev: "Setting"})} />
-          <ViewSetting content={"Dark Mode"} onPress={(e) => null} />
+          <ViewSetting content={"About Seyupo"} onPress={(e) => null} />
         </ScrollView>
         </View>
       </View>
