@@ -21,6 +21,8 @@ import LockScreenOne from '../components/setting/set.lock.screen.1';
 import LockScreenTwo from '../components/setting/set.lock.screen.2';
 import Lock from '../components/setting/lock';
 import ActivityAddDevice from '../layout/activity.addDevice';
+import ActivityAbout from '../components/setting/about';
+import AboutSeyupo from '../components/setting/about';
 
 /**
  * React Navigation V3.xx
@@ -116,6 +118,9 @@ const SettingNavigator = createStackNavigator({
     },
     ChangePass: {
         screen: ChangePassword
+    },
+    About: {
+        screen: AboutSeyupo
     }
 }, {
     headerMode: "none",
