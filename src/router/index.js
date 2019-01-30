@@ -1,7 +1,6 @@
 import React from 'react';
-import {createBottomTabNavigator, createStackNavigator,createSwitchNavigator} from 'react-navigation'
+import {createBottomTabNavigator, createStackNavigator,createSwitchNavigator, createAppContainer} from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-
 import {reduxifyNavigator, createNavigationReducer, createReactNavigationReduxMiddleware} from 'react-navigation-redux-helpers'
 import {connect} from 'react-redux'
 
@@ -23,6 +22,7 @@ import Lock from '../components/setting/lock';
 import ActivityAddDevice from '../layout/activity.addDevice';
 import ActivityAbout from '../components/setting/about';
 import AboutSeyupo from '../components/setting/about';
+import { Login } from '../store/action';
 
 /**
  * React Navigation V3.xx
@@ -189,24 +189,32 @@ const RootRouter = createSwitchNavigator({
     LockNavigator
 }, {
     initialRouteName: 'Loading',
-
 })
+
 
 /**
  * Redux Integration
  */
-
+// const router = RootRouter.router
+// const homeNavAction = router.getActionForPathAndParams('Loading')
+// const initialNavState = router.getStateForAction(homeNavAction)
+// const navReducers = (state = initialNavState, action) => {
+    
+// }
 const navReducers = createNavigationReducer(RootRouter)
 
 const middleware = createReactNavigationReduxMiddleware("root", state => state.nav)
 
 const App = reduxifyNavigator(RootRouter, "root")
 
-const mapStateToProps = (state) => ({
-    state: state.nav
-})
+const mapStateToProps = (state) => {
+    return {
+        state: state.nav,
+    }
+}
 
 const AppWithNavigationState = connect(mapStateToProps)(App)
+// const AppWithNavigationState = createAppContainer(RootRouter)
 
 export {
     navReducers,

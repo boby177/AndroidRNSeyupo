@@ -113,6 +113,11 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    configurations {
+        all {
+            exclude group: 'org.json', module: 'json'
+        }
+    }
     splits {
         abi {
             reset()
@@ -154,6 +159,11 @@ android {
 }
 
 dependencies {
+    // Socket IO
+    implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+
+    // For react native device info
+    implementation project(':react-native-device-info')
      // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:1.11.0'
 

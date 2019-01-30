@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { View, AsyncStorage, ActivityIndicator } from "react-native";
+import { connect } from 'react-redux'
 
-export default class ActivityLoading extends Component {
+class ActivityLoading extends Component {
   constructor(props) {
     super(props);
     this.state = {
     };
       this._bootstrapAsync();
   }
+
+    async componentDidMount() {
+      await this._bootstrapAsync();
+    }
+
     _bootstrapAsync = async () => {
         const userToken = await AsyncStorage.getItem('token');
-
         // This will switch to the App screen or Auth screen and this loading
         // screen will be unmounted and thrown away.
         this.props.navigation.navigate(userToken ? "LockNavigator" : "GuestNavigator");
@@ -24,3 +29,11 @@ export default class ActivityLoading extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: {...state.user}
+  }
+}
+
+export default connect(mapStateToProps)(ActivityLoading)

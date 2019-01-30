@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, BackHandler, ScrollView } from 'react-native';
 import Maps from '../components/maps'
 import Icon from "react-native-vector-icons/FontAwesome5";
+
+import ModalKu from '../components';
+import ModalLockDevice from '../components/maps/modal.lock';
 
 export default class ActivityMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        open: false,
+        a: 0
+        
     };
+    
     this.goBack = this.goBack.bind(this)
   }
 
@@ -25,16 +32,40 @@ export default class ActivityMap extends Component {
     componentWillUnmount() {
         this.backButton.remove()
     }
+    onClose() {
+        this.setState({
+            open: false,
+            a: 0
+        })
+    }
 
   render() {
+      
       const {navigation} = this.props
       const prev = navigation.getParam('prev','Panels')
+      
     return <View style={styles.container}>
+            <ModalKu open={this.state.open} onClose={this.onClose.bind(this)}>
+                <ScrollView>
+                    <ModalLockDevice value={"Connected"}/>
+                    <ModalLockDevice />
+                    <ModalLockDevice />
+                    <ModalLockDevice />
+                    <ModalLockDevice />
+                </ScrollView>
+
+            </ModalKu>
+        
         <Maps />
-        <View style={styles.wrapFloat}>
-            <TouchableHighlight style={styles.btn}>
+        <View style={{...styles.wrapFloat, right: this.state.a}}>
+            <TouchableHighlight style={styles.btn} onPress={(e) => {
+                this.setState({
+                    open: true,
+                    a: -1000
+                })
+            }}>
                 <View style={{justifyContent: 'center', alignItems: 'center',}}>
-                    <Icon name={'bell'} size={20} color={'#a8a8a8'} />
+                    <Icon name={'bell'} size={20} color={'#a8a8a8'} solid />
                     <Text style={styles.text}>Alarm</Text>
                 </View>
             </TouchableHighlight>
@@ -66,8 +97,7 @@ const styles = StyleSheet.create({
     },
     wrapFloat: {
         position: 'absolute',
-        zIndex: 99999,
-        right: 0
+        zIndex: 9,
     },
     btn: {
         justifyContent: 'center',

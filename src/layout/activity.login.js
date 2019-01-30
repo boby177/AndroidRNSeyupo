@@ -3,8 +3,10 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, AsyncStorage, 
 import TextInput from "../components/input";
 import MButton from "../components/buttons";
 import ModalExample from '../components/modal';
-
-export default class ActivityLogin extends Component {
+import { connect } from 'react-redux'
+import { Login } from '../store/action';
+import { toUnicode } from 'punycode';
+class ActivityLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +15,8 @@ export default class ActivityLogin extends Component {
         pass: "",
         errorUser: false,
         errorPass: false,
-        open: false
+        open: false,
+        message: ''
     };
   }
 
@@ -21,14 +24,34 @@ export default class ActivityLogin extends Component {
       this.setState({open: false})
   }
 
+  componentWillReceiveProps(props) {
+      console.log(props)
+      if(props.user) {
+          if(props.user.message !== '') {
+              this.setState({
+                  error: true,
+                  open: true,
+                  message: props.user.message
+              })
+          }
+          if(props.user.auth) {
+              this.props.navigation.navigate("Loading")
+          } else {
+              this.setState({
+                  open: true
+              })
+          }
+      }
+  }
+
   render() {
     return <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
         <ModalExample 
-            open={this.state.open}
+            open={false}
             title={"Oops"}
-            description="Username or Password incorrect"
-            error={true}
+            description={this.state.message}
+            error={this.state.error}
             onClose={this.onClose.bind(this)}
             onPress={this.onClose.bind(this)}
         />
@@ -52,34 +75,26 @@ export default class ActivityLogin extends Component {
             />
         </View>
         <MButton title={"Login"} onPress={e => {
-            console.log(this.state)
             const data = {
-                user: this.state.user,
-                pass: this.state.pass
+                username: this.state.user,
+                password: this.state.pass
             }
-
-            if(data.user === 'admin' && data.pass === 'admin') {
-                AsyncStorage.setItem("token", "1234567")
-                this.props.navigation.navigate("Loading", {
-                  prev: "Login"
-                });
-            } else if(data.user === "" && data.pass === "") {
+            
+            if(data.username === "" && data.password === "") {
                 this.setState({
                     errorUser: true,
                     errorPass: true
                 })
-            } else if(data.user === "") {
+            } else if(data.username === "") {
                 this.setState({
                     errorUser: true,
                 })
-            } else if(data.pass === "") {
+            } else if(data.password === "") {
                 this.setState({
                     errorPass: true
                 })
             } else {
-                this.setState({
-                    open: true
-                })
+                this.props.onLogin(data);
             }
           }} />
         <TouchableWithoutFeedback onPress={e => {
@@ -97,6 +112,20 @@ export default class ActivityLogin extends Component {
   }
 }
 
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogin: (payload) => dispatch(Login(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityLogin);
 
 const styles = StyleSheet.create({
     container: {

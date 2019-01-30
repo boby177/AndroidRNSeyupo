@@ -1,9 +1,16 @@
 import {createStore, applyMiddleware} from 'redux'
 import reducers from './reducers'
+import createSagaMiddleware from "redux-saga";
 import { middleware } from '../router';
-const store = createStore(
-    reducers,
-    applyMiddleware(middleware)
-)
+import rootSaga from './saga'
 
-export default store
+const sagaMiddleware = createSagaMiddleware()
+const mMiddleware = [middleware,sagaMiddleware]
+
+export const configureStore = () => {
+    const store = createStore(reducers, applyMiddleware(...mMiddleware))
+    sagaMiddleware.run(rootSaga)
+    return store
+}
+
+// sagaMiddleware.run(rootSaga);

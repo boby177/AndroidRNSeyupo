@@ -1,19 +1,26 @@
-package com.projectseyupo.service;
+package com.projectseyupo.services;
+
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
+
 import javax.annotation.Nullable;
 
-public class LocationService extends HeadlessJsTaskService {
+public class RunGeolocationService extends HeadlessJsTaskService {
     @Nullable
+    @Override
     protected HeadlessJsTaskConfig getTaskConfig(Intent intent) {
         Bundle extras = intent.getExtras();
+
+        WritableMap data = extras != null ? Arguments.fromBundle(extras) : null;
         return new HeadlessJsTaskConfig(
-                "LogLocation", //JS function to call
-                extras != null ? Arguments.fromBundle(extras) : null,
+                "GeoLocation", //JS function to call
+                data,
                 5000,
-                true);
+                false);
     }
 }

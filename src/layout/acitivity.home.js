@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, BackHandler} from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, BackHandler} from 'react-native';
 
 export default class ActivityHome extends Component {
   constructor(props) {
